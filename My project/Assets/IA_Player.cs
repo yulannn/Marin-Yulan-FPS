@@ -44,6 +44,15 @@ public partial class @IA_Player: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2d62ab4-adb9-4fb4-84d7-9c4b54b9a5da"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @IA_Player: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9cbdd104-0b49-4c88-9a9c-d85137fa6f10"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +142,7 @@ public partial class @IA_Player: IInputActionCollection2, IDisposable
         m_Movements = asset.FindActionMap("Movements", throwIfNotFound: true);
         m_Movements_Move = m_Movements.FindAction("Move", throwIfNotFound: true);
         m_Movements_Jump = m_Movements.FindAction("Jump", throwIfNotFound: true);
+        m_Movements_Shoot = m_Movements.FindAction("Shoot", throwIfNotFound: true);
     }
 
     ~@IA_Player()
@@ -190,12 +211,14 @@ public partial class @IA_Player: IInputActionCollection2, IDisposable
     private List<IMovementsActions> m_MovementsActionsCallbackInterfaces = new List<IMovementsActions>();
     private readonly InputAction m_Movements_Move;
     private readonly InputAction m_Movements_Jump;
+    private readonly InputAction m_Movements_Shoot;
     public struct MovementsActions
     {
         private @IA_Player m_Wrapper;
         public MovementsActions(@IA_Player wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Movements_Move;
         public InputAction @Jump => m_Wrapper.m_Movements_Jump;
+        public InputAction @Shoot => m_Wrapper.m_Movements_Shoot;
         public InputActionMap Get() { return m_Wrapper.m_Movements; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -211,6 +234,9 @@ public partial class @IA_Player: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
         }
 
         private void UnregisterCallbacks(IMovementsActions instance)
@@ -221,6 +247,9 @@ public partial class @IA_Player: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
         }
 
         public void RemoveCallbacks(IMovementsActions instance)
@@ -242,5 +271,6 @@ public partial class @IA_Player: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
     }
 }

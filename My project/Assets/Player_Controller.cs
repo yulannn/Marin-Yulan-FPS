@@ -3,8 +3,8 @@ using UnityEngine;
     public class Player_Controller : MonoBehaviour
     {
 
-        [SerializeField]private int speed = 5;
-        [SerializeField]private float jumpforce = 20;
+        [SerializeField]private int speed = 3;
+        [SerializeField]private float jumpforce = 5;
 
 
 
@@ -47,6 +47,8 @@ using UnityEngine;
             vel.x = moveDir.x * speed; 
             vel.z = moveDir.y * speed;
             rb.linearVelocity = vel;
+             
         }
+
 
     }

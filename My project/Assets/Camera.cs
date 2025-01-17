@@ -1,16 +1,14 @@
 using UnityEngine;
 
-public class PlayerLook : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float mouseSensitivityX = 500f;
-    [SerializeField] private float mouseSensitivityY = 500f;
-    [SerializeField] private float minYRotation = -60f;
-    [SerializeField] private float maxYRotation = 60f;
+    [SerializeField] private float mouseSensitivityX = 1f; 
+    [SerializeField] private float mouseSensitivityY = 1f; 
+    [SerializeField] private float minYRotation = -90f;   
+    [SerializeField] private float maxYRotation = 90f;   
 
     private float rotationX = 0f;
     private float rotationY = 0f;
-
-    [SerializeField] private float moveSpeed = 5f;
 
     private Transform playerBody;
 
@@ -21,21 +19,18 @@ public class PlayerLook : MonoBehaviour
         Cursor.visible = false;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        rotationY += Input.GetAxis("Mouse X") * mouseSensitivityX * Time.deltaTime;
-        rotationX -= Input.GetAxis("Mouse Y") * mouseSensitivityY * Time.deltaTime;
+       
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivityX * Time.deltaTime * 20f;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivityY * Time.deltaTime * 20f;
+
+        rotationY += mouseX;
+        rotationX -= mouseY;
         rotationX = Mathf.Clamp(rotationX, minYRotation, maxYRotation);
-        transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0f);
-        MovePlayer();
-    }
 
-    private void MovePlayer()
-    {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
-
-        Vector3 moveDirection = transform.forward * moveZ + transform.right * moveX;
-        playerBody.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+       
+        transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
+        playerBody.rotation = Quaternion.Euler(0f, rotationY, 0f);
     }
 }
