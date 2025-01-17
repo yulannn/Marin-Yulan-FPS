@@ -22,14 +22,13 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
        
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivityX * Time.deltaTime * 20f;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivityY * Time.deltaTime * 20f;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivityX * Time.deltaTime * 50f;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivityY * Time.deltaTime * 50f;
 
         rotationY += mouseX;
         rotationX -= mouseY;
         rotationX = Mathf.Clamp(rotationX, minYRotation, maxYRotation);
 
-       
         transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
         playerBody.rotation = Quaternion.Euler(0f, rotationY, 0f);
     }
