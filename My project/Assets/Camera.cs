@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float mouseSensitivityX = 1f; 
-    [SerializeField] private float mouseSensitivityY = 1f; 
+    [SerializeField] private float mouseSensitivityX = 20f; 
+    [SerializeField] private float mouseSensitivityY = 20f; 
     [SerializeField] private float minYRotation = -90f;   
     [SerializeField] private float maxYRotation = 90f;   
 
