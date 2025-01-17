@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float bulletSpeed = 20f;
     [SerializeField] private float fireRate = 0.2f;
 
-    private float nextFireTime = 0f;
+    private float nextFireTime = 10f;
     private IA_Player myInputActions;
 
     private void Awake()
