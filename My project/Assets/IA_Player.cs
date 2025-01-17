@@ -48,17 +48,6 @@ public partial class @IA_Player: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""7aad0256-ceeb-4132-99a1-88b4eefca0b5"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""2D Vector"",
                     ""id"": ""99ff9c41-9b51-41e2-a729-c50e2374eb7c"",
                     ""path"": ""2DVector"",

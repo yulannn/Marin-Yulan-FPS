@@ -3,8 +3,8 @@ using UnityEngine;
     public class Player_Controller : MonoBehaviour
     {
 
-        [SerializeField]private int speed = 1;
-        [SerializeField]private float jumpforce = 10;
+        [SerializeField]private int speed = 5;
+        [SerializeField]private float jumpforce = 20;
 
 
 
