@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float bulletSpeed = 20f;
     [SerializeField] private float fireRate = 0.2f;
 
-    private float nextFireTime = 10f;
+    private float nextFireTime = 0f;
     private IA_Player myInputActions;
 
     private void Awake()
@@ -28,19 +28,25 @@ public class Weapon : MonoBehaviour
         myInputActions.Disable();
     }
 
-  private void OnShoot(InputAction.CallbackContext context)
-{
-
-
-    GameObject bullet = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-
-  
-    Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
-    if (bulletRb != null)
+    private void OnShoot(InputAction.CallbackContext context)
     {
-        bulletRb.AddForce(firePoint.forward * 20f, ForceMode.VelocityChange);
+        if (Time.time < nextFireTime) return;
+        nextFireTime = Time.time + fireRate;
+
+        // Instancier la balle
+        GameObject bullet = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+
+        // Raycast pour viser au centre de l'écran
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            Vector3 direction = (hit.point - firePoint.position).normalized;
+            bulletRb.linearVelocity = direction * bulletSpeed;
+        }
+        else
+        {
+            bulletRb.linearVelocity = firePoint.forward * bulletSpeed;
+        }
     }
-}
-
-
 }
