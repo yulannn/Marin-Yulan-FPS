@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class Player_Controller : MonoBehaviour
@@ -21,22 +22,55 @@ public class Player_Controller : MonoBehaviour
     private CharacterController characterController;
 
     private bool canMove = true;
+    
+    private IA_Player myInputActions;
+    private InputAction moveAction;
+    private InputAction crouchAction;
+    private InputAction sprintAction;
+    
+    private bool isCrouching = false;
+    private bool isSprinting = false;
 
-    void Start()
+    
+
+    void Awake()
     {
+  
+        myInputActions = new IA_Player();
         characterController = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        
     }
 
-    void Update()
+    private void OnEnable()
+    {
+      
+        myInputActions.Enable();
+        
+      
+        moveAction = myInputActions.Movements.Move;
+        crouchAction = myInputActions.Movements.Crouch;
+        sprintAction = myInputActions.Movements.Sprint;
+    }
+
+    private void OnDisable()
+    {
+      
+        myInputActions.Disable();
+    }
+
+    void FixedUpdate()
     {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
+       
+        isSprinting = sprintAction.ReadValue<float>() > 0.5f; 
+        isCrouching = crouchAction.ReadValue<float>() > 0.5f;
+
+     
+        float curSpeedX = canMove ? (isSprinting ? runSpeed : walkSpeed) * moveAction.ReadValue<Vector2>().y : 0;
+        float curSpeedY = canMove ? (isSprinting ? runSpeed : walkSpeed) * moveAction.ReadValue<Vector2>().x : 0;
+        
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
@@ -54,12 +88,12 @@ public class Player_Controller : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-        if (Input.GetKey(KeyCode.R) && canMove)
+       
+        if (isCrouching && canMove)
         {
             characterController.height = crouchHeight;
             walkSpeed = crouchSpeed;
             runSpeed = crouchSpeed;
-
         }
         else
         {
@@ -70,6 +104,7 @@ public class Player_Controller : MonoBehaviour
 
         characterController.Move(moveDirection * Time.deltaTime);
 
+        
         if (canMove)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
