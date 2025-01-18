@@ -1,23 +1,15 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;  
+using UnityEngine.SceneManagement; 
+
 public class EndGame : MonoBehaviour
 {
-    [SerializeField] private string nextSceneName = "SceneName"; 
-
-   
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        
-        if (other.CompareTag("EndPlatform"))
+       
+        if (collision.gameObject.CompareTag("Player"))
         {
-          
-            RestartGame();
+           
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-    }
-
-      private void RestartGame()
-    {
-  
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
